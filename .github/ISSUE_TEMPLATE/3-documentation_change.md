@@ -1,7 +1,7 @@
 ---
 name: Documentation Change
 about: Suggest a documentation change or improvement for this project
-title: "docs: "
+title: "[docs]: "
 labels: documentation
 assignees: ''
 
