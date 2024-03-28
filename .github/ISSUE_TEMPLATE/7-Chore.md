@@ -1,7 +1,7 @@
 ---
 name: Chore
 about: Propose a build process or tooling change
-title: "chore: "
+title: "[chore]: "
 labels: chore
 assignees: ''
 
