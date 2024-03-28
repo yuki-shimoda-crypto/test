@@ -1,12 +1,3 @@
----
-name: Pull Request
-about: Describe this pull request's purpose here.
-title: ''
-labels: ''
-assignees: ''
-
----
-
 ## コミットの種類
 <!-- このプルリクエストに最も当てはまるコミットの種類を選択してください。 -->
 - [ ] feat: 新機能や機能の追加
