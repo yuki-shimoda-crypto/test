@@ -1,0 +1,48 @@
+FROM python:3.12-slim
+
+# コンテナ内の作業ディレクトリを設定
+WORKDIR /app
+
+# Pythonがpycファイルやディスクキャッシュを生成しないようにする
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# 依存関係をインストール
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+#------------------------------------------
+# dev only
+RUN apt update && \
+    apt install -y \
+    curl \
+    git \
+    make \
+    python3-venv \
+    vim-gtk3
+
+
+# install [Black](https://black.readthedocs.io/en/stable/)
+RUN pip install black
+#------------------------------------------
+
+# ユーザーを作成して切り替える
+RUN useradd -m user
+USER user
+
+#------------------------------------------
+# dev only
+
+# install [Black-vim](https://black.readthedocs.io/en/stable/integrations/editors.html#vim)
+RUN mkdir -p ~/.vim/pack/python/start/black/plugin && \
+    mkdir -p ~/.vim/pack/python/start/black/autoload && \
+    curl https://raw.githubusercontent.com/psf/black/stable/plugin/black.vim -o ~/.vim/pack/python/start/black/plugin/black.vim && \
+    curl https://raw.githubusercontent.com/psf/black/stable/autoload/black.vim -o ~/.vim/pack/python/start/black/autoload/black.vim
+#------------------------------------------
+
+
+
+# 開発環境のため、コマンドラインを起動
+#CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["bash"]
+
