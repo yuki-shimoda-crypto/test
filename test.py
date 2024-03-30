@@ -1,3 +1,6 @@
+import numpy
+import matplot.lib
+
 # In[3]
 
 random.seed(3)

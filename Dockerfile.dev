@@ -6,6 +6,7 @@ WORKDIR /app
 # Pythonがpycファイルやディスクキャッシュを生成しないようにする
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV MY_USER=user
 
 # 依存関係をインストール
 COPY requirements.txt .
@@ -15,6 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # dev only
 RUN apt update && \
     apt install -y \
+    bash-completion \
     curl \
     git \
     make \
@@ -24,11 +26,13 @@ RUN apt update && \
 
 # install [Black](https://black.readthedocs.io/en/stable/)
 RUN pip install black
+RUN pip install isort
+
 #------------------------------------------
 
 # ユーザーを作成して切り替える
-RUN useradd -m user
-USER user
+RUN useradd -m ${MY_USER}
+USER ${MY_USER}
 
 #------------------------------------------
 # dev only
@@ -38,11 +42,23 @@ RUN mkdir -p ~/.vim/pack/python/start/black/plugin && \
     mkdir -p ~/.vim/pack/python/start/black/autoload && \
     curl https://raw.githubusercontent.com/psf/black/stable/plugin/black.vim -o ~/.vim/pack/python/start/black/plugin/black.vim && \
     curl https://raw.githubusercontent.com/psf/black/stable/autoload/black.vim -o ~/.vim/pack/python/start/black/autoload/black.vim
-#------------------------------------------
 
+#RUN mkdir -p ~/.vim/plugin && \
+#    curl https://raw.githubusercontent.com/fisadev/vim-isort/master/ftplugin/python_vimisort.vim -o ~/.vim/plugin/python_vimisort.vim
+
+# git branch view
+RUN echo '\
+RED="\\[\\033[01;31m\\]"\n\
+GREEN="\\[\\033[01;32m\\]"\n\
+BLUE="\\[\\033[01;34m\\]"\n\
+NO_COLOR="\\[\\033[00m\\]"\n\
+parse_git_branch() {\n\
+ git branch 2>/dev/null | sed -e "/^[^*]/d" -e "s/* \\(.*\\)/(\\1)/"\n\
+}\n\
+PS1="${debian_chroot:+($debian_chroot)}${GREEN}\\u@\\h${NO_COLOR}:${BLUE}\\w${RED}\\$(parse_git_branch)${NO_COLOR}\\$ "\n' >> /home/${MY_USER}/.bashrc
+#------------------------------------------
 
 
 # 開発環境のため、コマンドラインを起動
 #CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 CMD ["bash"]
-
