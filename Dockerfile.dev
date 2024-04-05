@@ -3,6 +3,8 @@ FROM python:3.12-slim
 # コンテナ内の作業ディレクトリを設定
 WORKDIR /app
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # Pythonがpycファイルやディスクキャッシュを生成しないようにする
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -14,51 +16,51 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 #------------------------------------------
 # dev only
-RUN apt update && \
-    apt install -y \
-    bash-completion \
-    curl \
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     git \
+    jq \
     make \
+    man \
     python3-venv \
-    vim-gtk3
+    sudo \
+    tmux \
+    vim-gtk3 \
+    wget \
+    zsh && \
+    rm -rf /var/lib/apt/lists/*
 
 
 # install [Black](https://black.readthedocs.io/en/stable/)
-RUN pip install black
-RUN pip install isort
+# install [Flake8](https://flake8.pycqa.org/en/latest/)
+# install [isort](https://pycqa.github.io/isort/index.html)
+# install [mypy](https://www.mypy-lang.org/)
+# install [yamllint](https://yamllint.readthedocs.io/en/stable/#)
+RUN pip install --no-cache-dir black
+RUN pip install --no-cache-dir flake8
+RUN pip install --no-cache-dir flake8-bugbear
+RUN pip install --no-cache-dir isort
+RUN pip install --no-cache-dir mypy
+RUN pip install --no-cache-dir yamllint
 
-#------------------------------------------
+# install [hadolint](https://github.com/hadolint/hadolint)
+RUN wget -qO- "https://api.github.com/repos/hadolint/hadolint/releases/latest" | \
+    jq -r '.assets[] | select(.name | contains("Linux-x86_64")) | .browser_download_url' | \
+    xargs wget -qO /usr/local/bin/hadolint && \
+    chmod +x /usr/local/bin/hadolint
 
 # ユーザーを作成して切り替える
-RUN useradd -m ${MY_USER}
+RUN useradd -ms /bin/zsh ${MY_USER} && \
+    echo "${MY_USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${MY_USER} && \
+    chmod 0440 /etc/sudoers.d/${MY_USER}
+
 USER ${MY_USER}
 
-#------------------------------------------
-# dev only
-
-# install [Black-vim](https://black.readthedocs.io/en/stable/integrations/editors.html#vim)
-RUN mkdir -p ~/.vim/pack/python/start/black/plugin && \
-    mkdir -p ~/.vim/pack/python/start/black/autoload && \
-    curl https://raw.githubusercontent.com/psf/black/stable/plugin/black.vim -o ~/.vim/pack/python/start/black/plugin/black.vim && \
-    curl https://raw.githubusercontent.com/psf/black/stable/autoload/black.vim -o ~/.vim/pack/python/start/black/autoload/black.vim
-
-#RUN mkdir -p ~/.vim/plugin && \
-#    curl https://raw.githubusercontent.com/fisadev/vim-isort/master/ftplugin/python_vimisort.vim -o ~/.vim/plugin/python_vimisort.vim
-
-# git branch view
-RUN echo '\
-RED="\\[\\033[01;31m\\]"\n\
-GREEN="\\[\\033[01;32m\\]"\n\
-BLUE="\\[\\033[01;34m\\]"\n\
-NO_COLOR="\\[\\033[00m\\]"\n\
-parse_git_branch() {\n\
- git branch 2>/dev/null | sed -e "/^[^*]/d" -e "s/* \\(.*\\)/(\\1)/"\n\
-}\n\
-PS1="${debian_chroot:+($debian_chroot)}${GREEN}\\u@\\h${NO_COLOR}:${BLUE}\\w${RED}\\$(parse_git_branch)${NO_COLOR}\\$ "\n' >> /home/${MY_USER}/.bashrc
+# oh-my-zsh
+RUN sh -c "$(wget -qO- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 
+RUN sed -i 's/^plugins=(git)/plugins=(docker git python tmux)/' ~/.zshrc
 #------------------------------------------
 
-
-# 開発環境のため、コマンドラインを起動
-#CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-CMD ["bash"]
+# Djangoサーバーを起動
+CMD ["python", "mysite/manage.py", "runserver", "0.0.0.0:8000"]

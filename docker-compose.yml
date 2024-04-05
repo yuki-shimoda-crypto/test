@@ -1,12 +1,13 @@
+---
 services:
-  db:
-    image: postgres:16
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: yourdbname
-      POSTGRES_USER: youruser
-      POSTGRES_PASSWORD: yourpassword
+  # db:
+  #   image: postgres:16
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   environment:
+  #     POSTGRES_DB: yourdbname
+  #     POSTGRES_USER: youruser
+  #     POSTGRES_PASSWORD: yourpassword
 
   web_prod:
     build: .
@@ -14,38 +15,34 @@ services:
       - .:/app
     ports:
       - "8000:8000"
-    depends_on:
-      - db
-#    environment:
-#      DEBUG: "true"
-#      SECRET_KEY: yoursecretkey
-#      DATABASE_URL: postgres://youruser:yourpassword@db:5432/yourdbname
-    tty: true
+  #   depends_on:
+  #     - db
+  #   environment:
+  #     DEBUG: "true"
+  #     SECRET_KEY: yoursecretkey
+  #     DATABASE_URL: postgres://youruser:yourpassword@db:5432/yourdbname
 
   web_dev:
     build:
       context: .
       dockerfile: Dockerfile.dev
     volumes:
+      - ${SSH_AUTH_SOCK}:/ssh-agent
       - .:/app
-      - ./static:/app/static
       - ~/.gitconfig:/home/user/.gitconfig
       - ~/.ssh/:/home/user/.ssh
       - ~/.vimrc:/home/user/.vimrc
-      - ${SSH_AUTH_SOCK}:/ssh-agent
     environment:
       - SSH_AUTH_SOCK=/ssh-agent
     ports:
       - "8001:8000"
-    depends_on:
-      - db
+#    depends_on:
+#      - db
 #    environment:
 #      DEBUG: "true"
 #      SECRET_KEY: yoursecretkey
 #      DATABASE_URL: postgres://youruser:yourpassword@db:5432/yourdbname
 #    command: python manage.py runserver 0.0.0.0:8000
-    tty: true
 
-volumes:
-  postgres_data:
-
+# volumes:
+#   postgres_data:

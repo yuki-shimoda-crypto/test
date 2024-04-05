@@ -1,5 +1,5 @@
-import numpy
 import matplot.lib
+import numpy
 
 # In[3]
 
