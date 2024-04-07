@@ -7,7 +7,6 @@ random.seed(3)
 
 dice_list = []
 
-
 # サイコロを10回振った時の目を記録する
 for i in range(10):
     val = random.randrange(1, 7)

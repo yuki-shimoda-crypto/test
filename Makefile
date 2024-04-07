@@ -28,38 +28,38 @@ exec-web_prod:
 	docker compose exec -it web_prod bash
 
 # check
-.PHONY: check-all-file
-check-all-file: format-check lint
+.PHONY: check-All
+check-All: check-Dockerfile check-JavaScript check-Python check-YAML
+
+.PHONY: check-Dockerfile
+check-Dockerfile:
+	hadolint --ignore DL3008 --ignore DL3013 --ignore DL3059 Dockerfile Dockerfile.dev
+
+.PHONY: check-JavaScript
+check-JavaScript:
+	npx eslint .
+	npx prettier . --check
+
+.PHONY: check-Python
+check-Python:
+	black --check .
+	flake8 .
+	isort --check-only .
+	mypy .
+
+.PHONY: check-YAML
+check-YAML:
+	yamllint -d relaxed .
 
 # format
 .PHONY: format
-format:
+format: format-JavaScript format-Python
+
+.PHONY: format-JavaScript
+format-JavaScript:
+	npx prettier . --write
+
+.PHONY: format-Python
+format-Python:
 	black .
 	isort .
-
-.PHONY: format-check
-format-check:
-	black --check .
-	isort --check-only .
-
-.PHONY: format-diff
-format-diff:
-	black --diff --color .
-	isort --diff .
-
-# lint
-.PHONY: lint
-lint: lint-Docker lint-Python lint-YAML
-
-.PHONY: lint-Docker
-lint-Docker:
-	hadolint --ignore DL3008 --ignore DL3013 --ignore DL3059 Dockerfile Dockerfile.dev
-
-.PHONY: lint-Python
-lint-Python:
-	flake8 .
-	mypy .
-
-.PHONY: lint-YAML
-lint-YAML:
-	yamllint -d relaxed .

@@ -32,6 +32,7 @@ services:
       - ~/.gitconfig:/home/user/.gitconfig
       - ~/.ssh/:/home/user/.ssh
       - ~/.vimrc:/home/user/.vimrc
+      - node_volume:/app/node_modules
     environment:
       - SSH_AUTH_SOCK=/ssh-agent
     ports:
@@ -46,3 +47,6 @@ services:
 
 # volumes:
 #   postgres_data:
+
+volumes:
+  node_volume:
