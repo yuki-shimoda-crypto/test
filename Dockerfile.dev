@@ -61,6 +61,9 @@ USER ${MY_USER}
 RUN sh -c "$(wget -qO- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 
 RUN sed -i 's/^plugins=(git)/plugins=(docker git python tmux)/' ~/.zshrc
 
+# GPG_TTY設定を.zshrcに追加
+RUN echo 'export GPG_TTY=$(tty)' >> ~/.zshrc
+
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 #------------------------------------------
