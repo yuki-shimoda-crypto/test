@@ -43,7 +43,6 @@ RUN pip install --no-cache-dir black flake8 flake8-bugbear isort mypy yamllint
 
 COPY package.json package-lock.json ./
 RUN npm install --save-dev
-#RUN npm install --save-dev eslint @eslint/js eslint-config-prettier eslint-plugin-prettier htmlhint prettier stylelint stylelint-config-prettier
 
 # install [hadolint](https://github.com/hadolint/hadolint)
 RUN wget -qO- "https://api.github.com/repos/hadolint/hadolint/releases/latest" | \

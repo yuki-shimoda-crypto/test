@@ -28,8 +28,18 @@ exec-web_prod:
 	docker compose exec -it web_prod bash
 
 # check
-.PHONY: check-All
-check-All: check-Dockerfile check-JavaScript check-Python check-YAML
+.PHONY: check
+check: check-CSS check-HTML check-Dockerfile check-JavaScript check-MD check-Python check-YAML
+
+.PHONY: check-CSS
+check-CSS:
+	npx prettier "**/*.css" --check
+	npx stylelint "**/*.{css,html,js}"
+
+.PHONY: check-HTML
+check-HTML:
+	npx htmlhint "**/*.html"
+	npx stylelint "**/*.html"
 
 .PHONY: check-Dockerfile
 check-Dockerfile:
@@ -38,7 +48,12 @@ check-Dockerfile:
 .PHONY: check-JavaScript
 check-JavaScript:
 	npx eslint .
-	npx prettier . --check
+	npx prettier "**/*.js" --check
+	npx stylelint "**/*.js"
+
+.PHONY: check-MD
+check-MD:
+	npx prettier "**/*.md" --check
 
 .PHONY: check-Python
 check-Python:
@@ -53,13 +68,28 @@ check-YAML:
 
 # format
 .PHONY: format
-format: format-JavaScript format-Python
+format: format-CSS format-HTML format-JavaScript format-MD format-Python
+
+.PHONY: format-CSS
+format-CSS:
+	-npx prettier "**/*.css" --write
+	-npx stylelint "**/*.{css,html,js}" --fix
+
+.PHONY: format-HTML
+format-HTML:
+	-npx prettier "**/*.html" --write
+	-npx stylelint "**/*.html" --fix
 
 .PHONY: format-JavaScript
 format-JavaScript:
-	npx prettier . --write
+	-npx prettier "**/*.js" --write
+	-npx stylelint "**/*.js" --fix
+
+.PHONY: format-MD
+format-MD:
+	-npx prettier "**/*.md" --write
 
 .PHONY: format-Python
 format-Python:
-	black .
-	isort .
+	-black .
+	-isort .
