@@ -35,12 +35,6 @@ RUN apt-get update && \
     zsh && \
     rm -rf /var/lib/apt/lists/*
 
-# install [Black](https://black.readthedocs.io/en/stable/)
-# install [Flake8](https://flake8.pycqa.org/en/latest/)
-# install [isort](https://pycqa.github.io/isort/index.html)
-# install [mypy](https://www.mypy-lang.org/)
-# install [yamllint](https://yamllint.readthedocs.io/en/stable/#)
-
 RUN pip install --no-cache-dir black flake8 flake8-bugbear isort mypy yamllint
 
 COPY package.json package-lock.json ./
@@ -52,6 +46,10 @@ RUN wget -qO- "https://api.github.com/repos/hadolint/hadolint/releases/latest" |
     xargs wget -qO /usr/local/bin/hadolint && \
     chmod +x /usr/local/bin/hadolint
 
+# entrypoint.sh
+COPY tools/docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # ユーザーを作成して切り替える
 RUN useradd -ms /bin/zsh ${MY_USER} && \
     echo "${MY_USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${MY_USER} && \
@@ -62,6 +60,8 @@ USER ${MY_USER}
 # oh-my-zsh
 RUN sh -c "$(wget -qO- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 
 RUN sed -i 's/^plugins=(git)/plugins=(docker git python tmux)/' ~/.zshrc
+
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 #------------------------------------------
 
