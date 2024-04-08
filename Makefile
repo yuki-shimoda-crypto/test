@@ -27,6 +27,14 @@ exec-web_dev:
 exec-web_prod:
 	docker compose exec -it web_prod bash
 
+.PHONY: ps
+ps:
+	docker compose ps
+
+.PHONY: ps-a
+ps-a:
+	docker compose ps -a
+
 # check
 .PHONY: check
 check: check-CSS check-HTML check-Dockerfile check-JavaScript check-MD check-Python check-YAML
@@ -43,7 +51,7 @@ check-HTML:
 
 .PHONY: check-Dockerfile
 check-Dockerfile:
-	hadolint --ignore DL3008 --ignore DL3013 --ignore DL3059 Dockerfile Dockerfile.dev
+	hadolint Dockerfile Dockerfile.dev
 
 .PHONY: check-JavaScript
 check-JavaScript:

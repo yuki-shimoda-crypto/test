@@ -64,9 +64,10 @@ RUN sed -i 's/^plugins=(git)/plugins=(docker git python tmux)/' ~/.zshrc
 # GPG_TTY設定を.zshrcに追加
 RUN echo 'export GPG_TTY=$(tty)' >> ~/.zshrc
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 #------------------------------------------
 
 # Djangoサーバーを起動
-CMD ["python", "mysite/manage.py", "runserver", "0.0.0.0:8000"]
+#CMD ["python", "mysite/manage.py", "runserver", "0.0.0.0:8000"]
+CMD [ "sleep", "infinity" ]

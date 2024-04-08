@@ -15,6 +15,7 @@ services:
       - .:/app
     ports:
       - "8000:8000"
+    restart: always
   #   depends_on:
   #     - db
   #   environment:
@@ -38,6 +39,7 @@ services:
       - SSH_AUTH_SOCK=/ssh-agent
     ports:
       - "8001:8000"
+    restart: always
 #    depends_on:
 #      - db
 #    environment:

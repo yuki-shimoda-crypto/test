@@ -1,5 +1,5 @@
 // store input numbers
-num1 = _parseInt(prompt("Enter the first number "));
+const num1 = parseInt(prompt("Enter the first number "));
 const num2 = parseInt(prompt("Enter the second number "));
 
 //add two numbers
