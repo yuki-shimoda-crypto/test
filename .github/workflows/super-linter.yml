@@ -27,6 +27,7 @@ jobs:
         run: |
           pwd
           ls -la
+          pip install pytest
 
       - name: Lint Code Base
         uses: github/super-linter@v4
