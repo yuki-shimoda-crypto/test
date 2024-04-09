@@ -34,15 +34,15 @@ jobs:
           DEFAULT_BRANCH: "main"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-          CSS_FILE_NAME: .stylelintrc.json
-          DOCKERFILE_HADOLINT_FILE_NAME: .hadolint.yaml
-          JAVASCRIPT_DEFAULT_STYLE: prettier
-          JAVASCRIPT_ES_CONFIG_FILE: eslint.config.mjs
-          PYTHON_BLACK_CONFIG_FILE: pyproject.toml
-          PYTHON_FLAKE8_CONFIG_FILE: setup.cfg
-          PYTHON_ISORT_CONFIG_FILE: pyproject.toml
-          PYTHON_MYPY_CONFIG_FILE: pyproject.toml
-          YAML_CONFIG_FILE: .yamllint
+          CSS_FILE_NAME: ${PWD}/.stylelintrc.json
+          DOCKERFILE_HADOLINT_FILE_NAME: ${PWD}/.hadolint.yaml
+          JAVASCRIPT_DEFAULT_STYLE: ${PWD}/prettier
+          JAVASCRIPT_ES_CONFIG_FILE: ${PWD}/eslint.config.mjs
+          PYTHON_BLACK_CONFIG_FILE: ${PWD}/pyproject.toml
+          PYTHON_FLAKE8_CONFIG_FILE: ${PWD}/setup.cfg
+          PYTHON_ISORT_CONFIG_FILE: ${PWD}/pyproject.toml
+          PYTHON_MYPY_CONFIG_FILE: ${PWD}/pyproject.toml
+          YAML_CONFIG_FILE: ${PWD}/.yamllint
 
           VALIDATE_CSS: true
           VALIDATE_DOCKERFILE_HADOLINT: true
