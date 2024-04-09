@@ -16,13 +16,16 @@ jobs:
           fetch-depth: 0
       
       - name: Install apt
+        run: |
           apt-get update
           apt-get install -y --no-install-recommends nodejs npm
 
       - name: Install pip
+        run: |
           pip install --no-cache-dir black flake8 flake8-bugbear flake8-pytest-style isort mypy pytest pytest-cov pytest-django pytest-xdist yamllint 
           
       - name: Install npm
+        run: |
           npm install --save-dev
 
       # - name: Lint Code Base
