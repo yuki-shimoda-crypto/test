@@ -1,6 +1,18 @@
 {
   "files.autoSave": "afterDelay",
+  "gitlens.telemetry.enabled": false,
   "isort.args": ["--profile", "black"],
+  "python.analysis.inlayHints.pytestParameters": true,
+  "python.testing.pytestArgs": [
+    "tests"
+  ],
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "telemetry.telemetryLevel": "off",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+  },
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true,
@@ -8,8 +20,4 @@
       "source.organizeImports": "explicit"
     }
   },
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-  }
 }

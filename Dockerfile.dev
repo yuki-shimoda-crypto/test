@@ -35,7 +35,7 @@ RUN apt-get update && \
     zsh && \
     rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir black flake8 flake8-bugbear isort mypy yamllint
+RUN pip install --no-cache-dir black flake8 flake8-bugbear flake8-pytest-style isort mypy pytest pytest-django pytest-xdist yamllint 
 
 COPY package.json package-lock.json ./
 RUN npm install --save-dev
@@ -59,7 +59,7 @@ USER ${MY_USER}
 
 # oh-my-zsh
 RUN sh -c "$(wget -qO- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 
-RUN sed -i 's/^plugins=(git)/plugins=(docker git python tmux)/' ~/.zshrc
+RUN sed -i 's/^plugins=(git)/plugins=(docker docker-compose git python tmux)/' ~/.zshrc
 
 # GPG_TTY設定を.zshrcに追加
 RUN echo 'export GPG_TTY=$(tty)' >> ~/.zshrc
