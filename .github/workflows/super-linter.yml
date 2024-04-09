@@ -23,6 +23,11 @@ jobs:
           # changed files within `super-linter`
           fetch-depth: 0
 
+      - name: List files
+        run: |
+          pwd
+          ls -la
+
       - name: Lint Code Base
         uses: github/super-linter@v4
         env:
@@ -39,7 +44,6 @@ jobs:
           PYTHON_MYPY_CONFIG_FILE: pyproject.toml
           YAML_CONFIG_FILE: .yamllint
 
-          VALIDATE_ALL_CODEBASE: false
           VALIDATE_CSS: true
           VALIDATE_DOCKERFILE_HADOLINT: true
           VALIDATE_HTML: true
