@@ -1,5 +1,6 @@
-import sample_code.inc_dec as inc_dec
 import pytest
+
+import sample_code.inc_dec as inc_dec
 
 
 @pytest.fixture

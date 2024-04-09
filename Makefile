@@ -114,3 +114,9 @@ lint-Python:
 .PHONY: lint-YAML
 lint-YAML:
 	yamllint -d relaxed .
+
+# test
+.PHONY: test
+test:
+	pytest
+
