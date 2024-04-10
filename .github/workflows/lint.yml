@@ -1,4 +1,4 @@
-name: Lint
+name: Lint-Test
 
 on:
   push:
@@ -15,6 +15,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Install apt
         run: |
           apt-get update
@@ -42,28 +43,7 @@ jobs:
       - name: Lint
         run: |
           make lint
-      # - name: Lint Code Base
-      #   uses: github/super-linter@v4
-      #   env:
-      #     DEFAULT_BRANCH: "main"
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      #     CSS_FILE_NAME: .stylelintrc.json
-      #     DOCKERFILE_HADOLINT_FILE_NAME: .hadolint.yaml
-      #     JAVASCRIPT_DEFAULT_STYLE: prettier
-      #     JAVASCRIPT_ES_CONFIG_FILE: eslint.config.mjs
-      #     PYTHON_BLACK_CONFIG_FILE: pyproject.toml
-      #     PYTHON_FLAKE8_CONFIG_FILE: setup.cfg
-      #     PYTHON_ISORT_CONFIG_FILE: pyproject.toml
-      #     PYTHON_MYPY_CONFIG_FILE: pyproject.toml
-      #     YAML_CONFIG_FILE: .yamllint
-
-      #     VALIDATE_CSS: true
-      #     VALIDATE_DOCKERFILE_HADOLINT: true
-      #     VALIDATE_HTML: true
-      #     VALIDATE_JAVASCRIPT_ES: true
-      #     VALIDATE_PYTHON_BLACK: true
-      #     VALIDATE_PYTHON_FLAKE8: true
-      #     VALIDATE_PYTHON_ISORT: true
-      #     VALIDATE_PYTHON_MYPY: true
-      #     VALIDATE_YAML: true
+      - name: Test
+        run: |
+          make test
