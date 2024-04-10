@@ -15,23 +15,29 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
       - name: Install apt
         run: |
           apt-get update
           apt-get install -y --no-install-recommends jq make nodejs npm wget
 
       - name: Install pip
-        run: |
-          pip install --no-cache-dir black django django-stubs flake8 flake8-bugbear flake8-pytest-style isort mypy pytest pytest-cov pytest-django pytest-xdist yamllint 
-          
+        run: >
+          pip install --no-cache-dir black django django-stubs flake8
+          flake8-bugbear flake8-pytest-style isort mypy pytest pytest-cov
+          pytest-django pytest-xdist yamllint
+
       - name: Install npm
         run: |
           npm install --save-dev
 
       - name: Install hadolint
-        run: |
-           wget -qO- "https://api.github.com/repos/hadolint/hadolint/releases/latest" | jq -r '.assets[] | select(.name | contains("Linux-x86_64")) | .browser_download_url' | xargs wget -qO /usr/local/bin/hadolint && chmod +x /usr/local/bin/hadolint
+        run: >
+           wget -qO- "https://api.github.com/repos/hadolint/\
+           hadolint/releases/latest"
+           | jq -r '.assets[] | select(.name | contains("Linux-x86_64"))
+           | .browser_download_url'
+           | xargs wget -qO /usr/local/bin/hadolint
+           && chmod +x /usr/local/bin/hadolint
 
       - name: Lint
         run: |
@@ -61,4 +67,3 @@ jobs:
       #     VALIDATE_PYTHON_ISORT: true
       #     VALIDATE_PYTHON_MYPY: true
       #     VALIDATE_YAML: true
-
