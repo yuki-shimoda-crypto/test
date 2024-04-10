@@ -19,7 +19,7 @@ jobs:
       - name: Install apt
         run: |
           apt-get update
-          apt-get install -y --no-install-recommends make nodejs npm
+          apt-get install -y --no-install-recommends jq make nodejs npm wget
 
       - name: Install pip
         run: |
@@ -28,6 +28,10 @@ jobs:
       - name: Install npm
         run: |
           npm install --save-dev
+
+      - name: Install hadolint
+        run: |
+           wget -qO- "https://api.github.com/repos/hadolint/hadolint/releases/latest" | jq -r '.assets[] | select(.name | contains("Linux-x86_64")) | .browser_download_url' | xargs wget -qO /usr/local/bin/hadolint && chmod +x /usr/local/bin/hadolint
 
       - name: Lint
         run: |
