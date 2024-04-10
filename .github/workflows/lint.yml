@@ -32,8 +32,8 @@ jobs:
 
       - name: Install hadolint
         run: >
-           wget -qO- "https://api.github.com/repos/hadolint/\
-           hadolint/releases/latest"
+           wget -qO-
+           "https://api.github.com/repos/hadolint/hadolint/releases/latest"
            | jq -r '.assets[] | select(.name | contains("Linux-x86_64"))
            | .browser_download_url'
            | xargs wget -qO /usr/local/bin/hadolint
