@@ -19,7 +19,7 @@ jobs:
       - name: Install apt
         run: |
           apt-get update
-          apt-get install -y --no-install-recommends nodejs npm
+          apt-get install -y --no-install-recommends make nodejs npm
 
       - name: Install pip
         run: |
